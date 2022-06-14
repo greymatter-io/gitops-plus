@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ratelimit
+  name: ratelimit
+  namespace: plus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ratelimit
+  template:
+    metadata:
+      annotations:
+        greymatter.io/inject-sidecar-to: "8080"
+      labels:
+        app: ratelimit
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: ratelimit
+          image: "envoyproxy/ratelimit:v1.4.0"
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: GRPC_PORT
+            value: "8888"
+          - name: USE_STATSD
+            value: "false"
+          - name: LOG_LEVEL
+            value: "debug"
+          - name: REDIS_SOCKET_TYPE
+            value: "tcp"
+          - name: REDIS_URL
+            value: "localhost:10910"
+          - name: RUNTIME_ROOT
+            value: "/"
+          - name: RUNTIME_SUBDIRECTORY
+            value: "ratelimit"
+          command: ["/bin/sh","-c"]
+          args: ["mkdir -p /ratelimit/config && cp /data/ratelimit/config/config.yaml /ratelimit/config/config.yaml && cat /ratelimit/config/config.yaml &&  /bin/ratelimit"]
+          ports:
+            - name: server
+              containerPort: 8888
+            - name: debug
+              containerPort: 6070
+          volumeMounts:
+            - name: ratelimit-config
+              mountPath: /data/ratelimit/config
+              readOnly: true
+      volumes:
+        - name: ratelimit-config
+          configMap:
+            name: ratelimit
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ratelimit
+  namespace: plus
+data:
+  config.yaml: |-
+    ---
+    domain: edge
+    descriptors:
+      - key: path
+        value: "/"
+        rate_limit:
+          unit: second
+          requests_per_unit: 1

@@ -23,11 +23,12 @@ import (
 	// alias_name "<cue_module>/{path}:<name_of_directory_package>"
 
 	observables "greymatter.io.plus/greymatter/observables:greymatter"
-	edge "greymatter.io.plus/greymatter/edge:greymatter"
+	edge "greymatter.io.plus/greymatter/core:greymatter"
 	opa "greymatter.io.plus/greymatter/opa:greymatter"
+	ratelimit "greymatter.io.plus/greymatter/ratelimiter:greymatter"
 )
 
 configs:
 	// The edge config must come first because services create routes
 	// that reference the edge domain.
-	edge.Edge.config + observables.ObservablesApp.config + opa.OPA.config
+	edge.Edge.config + observables.ObservablesApp.config + opa.OPA.config + ratelimit.RateLimit.config
