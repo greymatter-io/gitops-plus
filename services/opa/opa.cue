@@ -24,13 +24,13 @@ opa_config: [
 		_is_ingress:           true
 	},
 	#cluster & {
-        cluster_key: OPAIngressName, 
-        _upstream_port: defaults.ports.opa_grpc_port
-        http2_protocol_options: {
-            allow_connect: true
-        }
-    },
-	#route & {route_key:     OPAIngressName},
+		cluster_key:    OPAIngressName
+		_upstream_port: defaults.ports.opa_grpc_port
+		http2_protocol_options: {
+			allow_connect: true
+		}
+	},
+	#route & {route_key: OPAIngressName},
 
 	// egress->redis
 	#domain & {domain_key: EgressToRedisName, port: defaults.ports.redis_ingress},
@@ -49,7 +49,6 @@ opa_config: [
 		_tcp_upstream: defaults.redis_cluster_name
 	},
 
-
 	// shared proxy object
 	#proxy & {
 		proxy_key: Name
@@ -57,15 +56,13 @@ opa_config: [
 		listener_keys: [OPAIngressName, EgressToRedisName]
 	},
 
-
 	// Grey Matter Catalog service entry.
 	greymatter.#CatalogService & {
 		name:                      "Open Policy Agent"
 		mesh_id:                   mesh.metadata.name
 		service_id:                "opa"
 		version:                   "0.0.1"
-		description:               "A general-purpose policy engine unifying policy enforcement across a cloud 
-native environment"
+		description:               "A general-purpose policy engine unifying policy enforcement across a cloud native environment"
 		api_endpoint:              ""
 		business_impact:           "critical"
 		enable_instance_metrics:   true

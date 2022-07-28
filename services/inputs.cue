@@ -9,7 +9,7 @@ mesh: {
 		name: string | *"greymatter-mesh"
 	}
 	spec: {
-		zone: string | *"default-zone"
+		zone: string | *"aks-plus-zone"
 		images: {
 			proxy: string | *"quay.io/greymatterio/gm-proxy:1.7.0"
 		}
@@ -27,7 +27,7 @@ defaults: {
 		metrics:                   8081
 		observables_app_port:      5000
 		egress_elasticsearch_port: 443
-		opa_grpc_port:	           9191
+		opa_grpc_port:             9191
 	}
 
 	edge: {
