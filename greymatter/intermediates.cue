@@ -601,3 +601,5 @@ import (
 		] + input.configs
 	}
 }
+
+#catalogentry: greymatter.#CatalogService

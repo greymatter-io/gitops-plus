@@ -1,9 +1,5 @@
 package greymatter
 
-import (
-	greymatter "greymatter.io/api"
-)
-
 let Name = "opa" // Name needs to match the greymatter.io/cluster value in the Kubernetes deployment
 let OPAIngressName = "\(Name)_local"
 let EgressToRedisName = "\(Name)_egress_to_redis"
@@ -57,7 +53,7 @@ opa_config: [
 	},
 
 	// Grey Matter Catalog service entry.
-	greymatter.#CatalogService & {
+	#catalogentry & {
 		name:                      "Open Policy Agent"
 		mesh_id:                   mesh.metadata.name
 		service_id:                "opa"

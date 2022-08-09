@@ -1,9 +1,5 @@
 package greymatter
 
-import (
-	greymatter "greymatter.io/api"
-)
-
 let Name = "ratelimit" // Name needs to match the greymatter.io/cluster value in the Kubernetes deployment
 let RateLimitIngressName = "\(Name)_local"
 let EgressToRedisName = "\(Name)_egress_to_redis"
@@ -53,7 +49,7 @@ ratelimit_config: [
 	},
 
 	// Grey Matter Catalog service entry
-	greymatter.#CatalogService & {
+	#catalogentry & {
 		name:                      "Rate Limit Service"
 		mesh_id:                   mesh.metadata.name
 		service_id:                "ratelimit"
