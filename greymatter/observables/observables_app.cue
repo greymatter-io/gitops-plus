@@ -1,9 +1,5 @@
 package greymatter
 
-import (
-	greymatter "greymatter.io/api"
-)
-
 let Name = "observables" // Name needs to match the greymatter.io/cluster value in the Kubernetes deployment
 let ObservablesAppIngressName = "\(Name)_local"
 let EgressToRedisName = "\(Name)_egress_to_redis"
@@ -119,7 +115,7 @@ observables_app_config: [
 	},
 
 	// Grey Matter Catalog service entry.
-	greymatter.#CatalogService & {
+	#catalogentry & {
 		name:                      "Observables App"
 		mesh_id:                   mesh.metadata.name
 		service_id:                "observables"
