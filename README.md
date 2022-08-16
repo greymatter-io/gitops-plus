@@ -1,6 +1,6 @@
-# Grey Matter Plus CUE
+# greymatter.io Plus CUE
 
-Additional CUE files for Grey Matter mesh configurations.
+Additional CUE files for greymatter.io mesh configurations.
 
 ## Prerequisites
 
