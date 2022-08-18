@@ -32,6 +32,13 @@ spec:
         image: quay.io/greymatterio/gm-proxy:1.7.0
         imagePullPolicy: Always
         name: sidecar
+        resources:
+          limits:
+            cpu: '1'
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 128Mi
         ports:
         - containerPort: 10809
           name: proxy

@@ -34,6 +34,13 @@ spec:
           "--ignore=.*",
           "/policy/policy.rego",
         ]
+        resources:
+          limits:
+            cpu: 200m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
         volumeMounts:
         - readOnly: true
           mountPath: /policy

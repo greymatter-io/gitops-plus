@@ -38,6 +38,13 @@ spec:
             value: "/"
           - name: RUNTIME_SUBDIRECTORY
             value: "ratelimit"
+          resources:
+            limits:
+              cpu: 200m
+              memory: 512Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
           command: ["/bin/sh","-c"]
           args: ["mkdir -p /ratelimit/config && cp /data/ratelimit/config/config.yaml /ratelimit/config/config.yaml && cat /ratelimit/config/config.yaml &&  /bin/ratelimit"]
           ports:
