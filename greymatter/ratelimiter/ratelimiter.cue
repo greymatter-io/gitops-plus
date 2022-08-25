@@ -1,6 +1,7 @@
 package greymatter
 
-let Name = "ratelimit" // Name needs to match the greymatter.io/cluster value in the Kubernetes deployment
+// Name needs to match the greymatter.io/cluster value in the Kubernetes deployment
+let Name = "ratelimit"
 let RateLimitIngressName = "\(Name)_local"
 let EgressToRedisName = "\(Name)_egress_to_redis"
 
@@ -24,7 +25,7 @@ ratelimit_config: [
 	},
 	#route & {route_key: RateLimitIngressName},
 
-	// egress->redis
+	// egress -> redis
 	#domain & {domain_key: EgressToRedisName, port: defaults.ports.redis_ingress},
 	#cluster & {
 		cluster_key:  EgressToRedisName
@@ -35,8 +36,9 @@ ratelimit_config: [
 	// unused route must exist for the cluster to be registered with sidecar
 	#route & {route_key: EgressToRedisName},
 	#listener & {
-		listener_key:  EgressToRedisName
-		ip:            "127.0.0.1" // egress listeners are local-only
+		listener_key: EgressToRedisName
+		// egress listeners are local-only
+		ip:            "127.0.0.1"
 		port:          defaults.ports.redis_ingress
 		_tcp_upstream: defaults.redis_cluster_name
 	},
@@ -49,7 +51,7 @@ ratelimit_config: [
 	},
 
 	// Grey Matter Catalog service entry
-	#catalogentry & {
+	#catalog_entry & {
 		name:                      "Rate Limit Service"
 		mesh_id:                   mesh.metadata.name
 		service_id:                "ratelimit"

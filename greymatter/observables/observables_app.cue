@@ -1,6 +1,7 @@
 package greymatter
 
-let Name = "observables" // Name needs to match the greymatter.io/cluster value in the Kubernetes deployment
+// Name needs to match the greymatter.io/cluster value in the Kubernetes deployment
+let Name = "observables"
 let ObservablesAppIngressName = "\(Name)_local"
 let EgressToRedisName = "\(Name)_egress_to_redis"
 let EgressToElasticSearchName = "\(Name)_egress_to_elasticsearch"
@@ -23,7 +24,7 @@ observables_app_config: [
 	#cluster & {cluster_key: ObservablesAppIngressName, _upstream_port: defaults.ports.observables_app_port},
 	#route & {route_key:     ObservablesAppIngressName},
 
-	// egress->redis
+	// egress -> redis
 	#domain & {domain_key: EgressToRedisName, port: defaults.ports.redis_ingress},
 	#cluster & {
 		cluster_key:  EgressToRedisName
@@ -34,16 +35,18 @@ observables_app_config: [
 	// unused route must exist for the cluster to be registered with sidecar
 	#route & {route_key: EgressToRedisName},
 	#listener & {
-		listener_key:  EgressToRedisName
-		ip:            "127.0.0.1" // egress listeners are local-only
+		listener_key: EgressToRedisName
+		// egress listeners are local-only
+		ip:            "127.0.0.1"
 		port:          defaults.ports.redis_ingress
 		_tcp_upstream: defaults.redis_cluster_name
 	},
 
-	// egress->elasticsearch
+	// egress -> elasticsearch
 	#domain & {
 		domain_key: EgressToElasticSearchName
-		port:       9200 // don't change this, the app expects this port
+		// don't change this, the app expects this port
+		port: 9200
 		custom_headers: [
 			{
 				key:   "Host"
@@ -64,8 +67,10 @@ observables_app_config: [
 	#route & {route_key: EgressToElasticSearchName},
 	#listener & {
 		listener_key: EgressToElasticSearchName
-		ip:           "127.0.0.1" // egress listeners are local-only
-		port:         9200        // don't change this, the app expects this port
+		// egress listeners are local-only
+		ip: "127.0.0.1"
+		// don't change this, the app expects this port
+		port: 9200
 	},
 
 	// shared proxy object
@@ -115,7 +120,7 @@ observables_app_config: [
 	},
 
 	// Grey Matter Catalog service entry.
-	#catalogentry & {
+	#catalog_entry & {
 		name:                      "Observables App"
 		mesh_id:                   mesh.metadata.name
 		service_id:                "observables"

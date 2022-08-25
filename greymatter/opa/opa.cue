@@ -1,6 +1,7 @@
 package greymatter
 
-let Name = "opa" // Name needs to match the greymatter.io/cluster value in the Kubernetes deployment
+// Name needs to match the greymatter.io/cluster value in the Kubernetes deployment
+let Name = "opa"
 let OPAIngressName = "\(Name)_local"
 let EgressToRedisName = "\(Name)_egress_to_redis"
 
@@ -28,7 +29,7 @@ opa_config: [
 	},
 	#route & {route_key: OPAIngressName},
 
-	// egress->redis
+	// egress -> redis
 	#domain & {domain_key: EgressToRedisName, port: defaults.ports.redis_ingress},
 	#cluster & {
 		cluster_key:  EgressToRedisName
@@ -39,8 +40,9 @@ opa_config: [
 	// unused route must exist for the cluster to be registered with sidecar
 	#route & {route_key: EgressToRedisName},
 	#listener & {
-		listener_key:  EgressToRedisName
-		ip:            "127.0.0.1" // egress listeners are local-only
+		listener_key: EgressToRedisName
+		// egress listeners are local-only
+		ip:            "127.0.0.1"
 		port:          defaults.ports.redis_ingress
 		_tcp_upstream: defaults.redis_cluster_name
 	},
@@ -53,7 +55,7 @@ opa_config: [
 	},
 
 	// Grey Matter Catalog service entry.
-	#catalogentry & {
+	#catalog_entry & {
 		name:                      "Open Policy Agent"
 		mesh_id:                   mesh.metadata.name
 		service_id:                "opa"
